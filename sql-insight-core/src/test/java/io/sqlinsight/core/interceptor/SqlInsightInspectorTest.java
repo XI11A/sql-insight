@@ -28,7 +28,7 @@ class SqlInsightInspectorTest {
     @Test
     void testInspectAndDisable() {
         QueryCollector collector = new QueryCollector(10);
-        SqlInsightInspector inspector = new SqlInsightInspector(collector);
+        SqlInsightInspector inspector = new SqlInsightInspector(collector, null);
 
         inspector.inspect("SELECT * FROM test");
         assertEquals(1, collector.size());

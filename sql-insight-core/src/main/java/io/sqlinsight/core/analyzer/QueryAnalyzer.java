@@ -1,6 +1,5 @@
 package io.sqlinsight.core.analyzer;
 
-import io.sqlinsight.core.collector.QueryCollector;
 import io.sqlinsight.core.context.QueryContext;
 import io.sqlinsight.core.model.QueryInfo;
 import org.slf4j.Logger;
@@ -17,7 +16,6 @@ public class QueryAnalyzer {
 
     private static final Logger logger = LoggerFactory.getLogger(QueryAnalyzer.class);
 
-    private final QueryCollector queryCollector;
     private int slowQueryThreshold = 200;
     
     // N+1 Tracking (SourceMethod:NormalizedPattern -> Stats)
@@ -27,8 +25,7 @@ public class QueryAnalyzer {
     // Throughput Tracking
     private final List<Long> executedTimestamps = Collections.synchronizedList(new ArrayList<>());
 
-    public QueryAnalyzer(QueryCollector queryCollector) {
-        this.queryCollector = queryCollector;
+    public QueryAnalyzer() {
     }
 
     public void setSlowQueryThreshold(int slowQueryThreshold) {

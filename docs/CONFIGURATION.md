@@ -33,6 +33,23 @@ sql-insight.slow-query-threshold=150
 sql-insight.max-queries=2000
 ```
 
+## Spring Security Integration
+
+If your application uses Spring Security, you must explicitly permit access to the SQL Insight paths. Add the following to your `SecurityFilterChain` configuration:
+
+```java
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/sql-insight/**").permitAll() // Permit Dashboard UI and API
+            .anyRequest().authenticated()
+        )
+        // ... rest of your config
+    return http.build();
+}
+```
+
 ## Production Profile Auto-Disable
 
 By default, the dashboard is **automatically disabled** when the `prod` Spring profile is active to ensure security. 

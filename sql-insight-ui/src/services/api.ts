@@ -3,7 +3,7 @@ import type { QueryInfo, QueryMetrics, NPlusOnePattern, HealthStatus } from '../
 const BASE_URL = import.meta.env.DEV ? 'http://localhost:8080/sql-insight/api' : '/sql-insight/api';
 
 // Helper for dev mocking
-const USE_MOCKS = import.meta.env.DEV && true; 
+const USE_MOCKS = false; 
 
 export const api = {
   async getMetrics(): Promise<QueryMetrics> {
@@ -37,8 +37,12 @@ export const api = {
   },
 
   async getSlowQueries(): Promise<QueryInfo[]> {
-    const queries = await this.getQueries();
-    return queries.filter(q => q.slowQuery);
+    if (USE_MOCKS) {
+      const queries = await this.getQueries();
+      return queries.filter(q => q.slowQuery);
+    }
+    const response = await fetch(`${BASE_URL}/slow-queries`);
+    return response.json();
   },
 
   async getNPlusOnePatterns(): Promise<NPlusOnePattern[]> {

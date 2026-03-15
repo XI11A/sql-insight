@@ -1,8 +1,7 @@
 name: SQL Insight Release
 
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   release:

@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 public class QueryCollector {
     private final ConcurrentLinkedQueue<QueryInfo> queries = new ConcurrentLinkedQueue<>();
     private final AtomicInteger count = new AtomicInteger(0);
+    private final java.util.concurrent.atomic.AtomicLong totalSessionQueries = new java.util.concurrent.atomic.AtomicLong(0);
     private int maxQueries = 1000;
 
     public QueryCollector() {
@@ -22,6 +23,7 @@ public class QueryCollector {
 
     public void addQuery(QueryInfo queryInfo) {
         queries.add(queryInfo);
+        totalSessionQueries.incrementAndGet();
         int currentSize = count.incrementAndGet();
         
         while (currentSize > maxQueries) {
@@ -31,6 +33,10 @@ public class QueryCollector {
                 break;
             }
         }
+    }
+
+    public long getTotalSessionQueries() {
+        return totalSessionQueries.get();
     }
 
     public List<QueryInfo> getQueries() {

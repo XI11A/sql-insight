@@ -1,6 +1,5 @@
 package io.sqlinsight.core.analyzer;
 
-import io.sqlinsight.core.collector.QueryCollector;
 import io.sqlinsight.core.context.QueryContext;
 import io.sqlinsight.core.model.QueryInfo;
 import org.junit.jupiter.api.AfterEach;
@@ -11,13 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QueryAnalyzerTest {
 
-    private QueryCollector collector;
     private QueryAnalyzer analyzer;
 
     @BeforeEach
     void setUp() {
-        collector = new QueryCollector(100);
-        analyzer = new QueryAnalyzer(collector);
+        analyzer = new QueryAnalyzer();
         QueryContext.clear();
     }
 

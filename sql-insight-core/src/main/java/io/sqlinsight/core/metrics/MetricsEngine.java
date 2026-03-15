@@ -19,10 +19,10 @@ public class MetricsEngine {
 
     public QueryMetrics generateMetrics() {
         List<QueryInfo> queries = queryCollector.getQueries();
-        long totalQueries = queries.size();
+        long totalQueries = queryCollector.getTotalSessionQueries();
         
         long slowQueries = queries.stream().filter(QueryInfo::isSlowQuery).count();
-        long nPlusOneWarnings = queries.stream().filter(QueryInfo::isnPlusOneDetected).count();
+        long nPlusOneWarnings = queryAnalyzer.getNPlusOnePatterns().size();
         
         double avgExecutionTime = 0.0;
         if (totalQueries > 0) {

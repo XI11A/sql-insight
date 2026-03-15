@@ -1,5 +1,7 @@
 package io.sqlinsight.core.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class QueryMetrics {
     private long totalQueries;
     private double avgExecutionTime;
@@ -40,6 +42,7 @@ public class QueryMetrics {
         this.slowQueries = slowQueries;
     }
 
+    @JsonProperty("nPlusOneWarnings")
     public long getNPlusOneWarnings() {
         return nPlusOneWarnings;
     }

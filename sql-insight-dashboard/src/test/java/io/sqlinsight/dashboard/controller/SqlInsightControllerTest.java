@@ -30,8 +30,8 @@ class SqlInsightControllerTest {
         }
         @Bean
         @Primary
-        public QueryAnalyzer queryAnalyzer(QueryCollector queryCollector) {
-            return new QueryAnalyzer(queryCollector);
+        public QueryAnalyzer queryAnalyzer() {
+            return new QueryAnalyzer();
         }
         @Bean
         @Primary

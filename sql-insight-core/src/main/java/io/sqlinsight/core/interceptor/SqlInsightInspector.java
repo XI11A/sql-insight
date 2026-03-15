@@ -15,9 +15,11 @@ public class SqlInsightInspector implements StatementInspector {
     private static final Logger logger = LoggerFactory.getLogger(SqlInsightInspector.class);
 
     private final QueryCollector queryCollector;
+    private final io.sqlinsight.core.analyzer.QueryAnalyzer queryAnalyzer;
 
-    public SqlInsightInspector(QueryCollector queryCollector) {
+    public SqlInsightInspector(QueryCollector queryCollector, io.sqlinsight.core.analyzer.QueryAnalyzer queryAnalyzer) {
         this.queryCollector = queryCollector;
+        this.queryAnalyzer = queryAnalyzer;
     }
 
     @Override
@@ -49,6 +51,11 @@ public class SqlInsightInspector implements StatementInspector {
         if (info.getSourceClass() == null && QueryContext.getActiveMethodClass() != null) {
             info.setSourceClass(QueryContext.getActiveMethodClass());
             info.setSourceMethod(QueryContext.getActiveMethodName());
+        }
+
+        // Analyze query for N+1 and thresholds
+        if (queryAnalyzer != null) {
+            queryAnalyzer.analyze(info);
         }
 
         queryCollector.addQuery(info);

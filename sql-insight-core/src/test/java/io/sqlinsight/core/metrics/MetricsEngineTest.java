@@ -13,19 +13,22 @@ class MetricsEngineTest {
     @Test
     void testGenerateMetrics() {
         QueryCollector collector = new QueryCollector(100);
-        QueryAnalyzer analyzer = new QueryAnalyzer(collector);
+        QueryAnalyzer analyzer = new QueryAnalyzer();
+        analyzer.setNPlusOneThreshold(0); // Trigger detection on first occurrence for test
         MetricsEngine engine = new MetricsEngine(collector, analyzer);
 
         QueryInfo q1 = new QueryInfo();
+        q1.setSql("SELECT * FROM users");
         q1.setExecutionTime(100);
-        q1.setSlowQuery(false);
-        q1.setnPlusOneDetected(false);
+        analyzer.analyze(q1);
         collector.addQuery(q1);
 
         QueryInfo q2 = new QueryInfo();
+        q2.setSql("SELECT * FROM orders WHERE user_id = ?");
+        q2.setSourceClass("OrderRepo");
+        q2.setSourceMethod("findByUser");
         q2.setExecutionTime(300);
-        q2.setSlowQuery(true);
-        q2.setnPlusOneDetected(true);
+        analyzer.analyze(q2);
         collector.addQuery(q2);
 
         QueryMetrics metrics = engine.generateMetrics();

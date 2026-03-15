@@ -25,6 +25,10 @@ export default function Queries() {
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
 
   useEffect(() => {
     async function fetchData() {
@@ -46,14 +50,39 @@ export default function Queries() {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  const filteredQueries = queries.filter(q => 
-    q.sql.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    q.sourceMethod.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredQueries = queries
+    .filter(q => 
+      q.sql.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      q.sourceMethod.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      // Latest first
+      return new Date(b.executedAt).getTime() - new Date(a.executedAt).getTime();
+    });
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredQueries.length / pageSize);
+  const startIndex = (currentPage - 1) * pageSize;
+  const paginatedQueries = filteredQueries.slice(startIndex, startIndex + pageSize);
+
+  useEffect(() => {
+    // Reset to first page when search term changes
+    setCurrentPage(1);
+  }, [searchTerm]);
 
   if (loading) {
     return <div className="p-8 text-slate-500 animate-pulse">Loading query logs...</div>;
   }
+
+  const formatDate = (dateStr: string | undefined) => {
+    if (!dateStr) return 'N/A';
+    try {
+      const d = new Date(dateStr);
+      return isNaN(d.getTime()) ? 'N/A' : format(d, 'HH:mm:ss.SSS');
+    } catch (e) {
+      return 'N/A';
+    }
+  };
 
   return (
     <div className="p-8 space-y-6 animate-in fade-in duration-500">
@@ -87,8 +116,8 @@ export default function Queries() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredQueries.length > 0 ? (
-              filteredQueries.map((query, idx) => (
+            {paginatedQueries.length > 0 ? (
+              paginatedQueries.map((query, idx) => (
                 <TableRow key={idx}>
                   <TableCell className="font-mono text-[13px] max-w-md truncate group relative">
                     <span className="text-slate-300">{query.sql}</span>
@@ -99,7 +128,7 @@ export default function Queries() {
                   <TableCell>
                     <span className={cn(
                       "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
-                      query.executionTime > 200 
+                      query.slowQuery 
                         ? "bg-rose-500/10 text-rose-500" 
                         : "bg-emerald-500/10 text-emerald-500"
                     )}>
@@ -113,7 +142,7 @@ export default function Queries() {
                     </div>
                   </TableCell>
                   <TableCell className="text-slate-400 text-xs">
-                    {format(new Date(query.executedAt), 'HH:mm:ss.SSS')}
+                    {formatDate(query.executedAt)}
                   </TableCell>
                   <TableCell className="text-right">
                     <button 
@@ -137,10 +166,27 @@ export default function Queries() {
       </Card>
 
       <div className="flex items-center justify-between text-sm text-slate-500">
-        <p>Showing {filteredQueries.length} of {queries.length} queries</p>
-        <div className="flex gap-2">
-           <button className="px-3 py-1 border border-slate-800 rounded disabled:opacity-50"><ChevronLeft size={16}/></button>
-           <button className="px-3 py-1 border border-slate-800 rounded disabled:opacity-50"><ChevronRight size={16}/></button>
+        <p>
+          Showing {startIndex + 1} to {Math.min(startIndex + pageSize, filteredQueries.length)} of {filteredQueries.length} results
+        </p>
+        <div className="flex items-center gap-4">
+          <p>Page {currentPage} of {totalPages || 1}</p>
+          <div className="flex gap-2">
+            <button 
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+              className="px-3 py-1 border border-slate-800 rounded hover:bg-slate-800 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+            >
+              <ChevronLeft size={16}/>
+            </button>
+            <button 
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages || totalPages === 0}
+              className="px-3 py-1 border border-slate-800 rounded hover:bg-slate-800 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+            >
+              <ChevronRight size={16}/>
+            </button>
+          </div>
         </div>
       </div>
     </div>

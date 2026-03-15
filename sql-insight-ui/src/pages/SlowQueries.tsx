@@ -79,7 +79,7 @@ export default function SlowQueries() {
                       </div>
                     </TableCell>
                     <TableCell className="text-right text-slate-500 text-xs">
-                       200ms
+                       &gt; Threshold
                     </TableCell>
                   </TableRow>
                 ))
