@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-primary: #6366F1;
+  --color-secondary: #22C55E;
+  --color-accent: #F59E0B;
+  --color-background: #0F172A;
+  --color-foreground: #F1F5F9;
+  
+  --color-card: #1E293B;
+  --color-card-foreground: #F1F5F9;
+  
+  --color-border: #334155;
+  --color-input: #334155;
+  --color-ring: #6366F1;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+:root {
+  color-scheme: dark;
+}
