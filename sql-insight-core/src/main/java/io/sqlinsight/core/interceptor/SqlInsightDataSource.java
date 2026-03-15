@@ -140,12 +140,13 @@ public class SqlInsightDataSource implements DataSource {
             info.setExecutedAt(LocalDateTime.now());
             info.setLabel(QueryContext.getCurrentLabel());
 
-            QueryContextTracker.populateSource(info);
-            
-            // Fallback for explicitly annotated methods
-            if (info.getSourceClass() == null && QueryContext.getActiveMethodClass() != null) {
+            // Priority 1: AOP captured method (precise)
+            if (QueryContext.getActiveMethodClass() != null) {
                 info.setSourceClass(QueryContext.getActiveMethodClass());
                 info.setSourceMethod(QueryContext.getActiveMethodName());
+            } else {
+                // Priority 2: Use stack trace heuristics
+                QueryContextTracker.populateSource(info);
             }
 
             if (queryAnalyzer != null) {

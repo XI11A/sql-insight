@@ -20,9 +20,9 @@ Hibernate Interceptor
         ↓
 Query Collector
         ↓
-Query Analyzer
+Query Analyzer (checks for N+1 patterns)
         ↓
-Metrics Engine
+Metrics Engine (deduplicates N+1 pattern warnings)
         ↓
 Dashboard API
         ↓
@@ -91,8 +91,8 @@ Spring Boot integration.
 
 Responsibilities:
 
-• Auto configuration  
-• Register Hibernate interceptor  
+• Register Hibernate interceptor & DataSource proxy
+• AOP-based automated JPA repository tracking (@Around "Repository+.*")
 • Enable dashboard API  
 • Read application properties
 
@@ -363,16 +363,14 @@ public @interface QueryTrace {
 Aspect implementation:
 
 ```java
-@Around("@annotation(QueryTrace)")
+@Around("@annotation(QueryTrace) || execution(* org.springframework.data.repository.Repository+.*(..))")
 public Object trackQuery(ProceedingJoinPoint joinPoint) {
-
     QueryContext.startMethod(joinPoint);
-
-    Object result = joinPoint.proceed();
-
-    QueryContext.endMethod();
-
-    return result;
+    try {
+        return joinPoint.proceed();
+    } finally {
+        QueryContext.endMethod();
+    }
 }
 ```
 

@@ -12,6 +12,15 @@ public class SqlInsightAspect {
 
     @Around("@annotation(io.sqlinsight.annotations.QueryTrace)")
     public Object trackQuery(ProceedingJoinPoint joinPoint) throws Throwable {
+        return wrapWithContext(joinPoint);
+    }
+
+    @Around("execution(* org.springframework.data.repository.Repository+.*(..))")
+    public Object trackRepositoryCall(ProceedingJoinPoint joinPoint) throws Throwable {
+        return wrapWithContext(joinPoint);
+    }
+
+    private Object wrapWithContext(ProceedingJoinPoint joinPoint) throws Throwable {
         QueryContext.startMethod(joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
         try {
             return joinPoint.proceed();

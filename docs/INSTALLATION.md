@@ -30,7 +30,7 @@ implementation 'io.sqlinsight:sql-insight-spring-boot-starter:1.0.0-SNAPSHOT'
 
 ## 4. Quick Start
 
-By default, SQL Insight is enabled once added to the classpath. You can access the dashboard at:
+By default, SQL Insight is enabled once added to the classpath. You will see the **SQL Insight banner** in the console during startup. You can access the dashboard at:
 `http://localhost:8080/sql-insight`
 
 To verify the installation, you can also check the health endpoint:

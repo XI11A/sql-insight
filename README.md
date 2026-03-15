@@ -7,12 +7,12 @@
 
 ## Key Features
 
-- 🔍 **Real-time SQL Interception**: Captures queries, timings, and originating source context.
-- ⚡ **Auto-Discovery**: Automatic N+1 and Slow Query detection.
+- 🔍 **Real-time SQL Interception**: Captures queries, timings, and originating source context automatically for JPA and manually via annotations.
+- ⚡ **Auto-Discovery**: Automatic N+1 and Slow Query detection with unique pattern recognition.
 - 🏷️ **Smart Labeling**: Fine-grained query tagging using simple annotations.
 - 📊 **Modern Dashboard**: Vercel-inspired dark-themed dashboard built with React & Tailwind.
 - 🛡️ **Privacy First**: Sensitive query parameters are automatically masked.
-- 📦 **Zero Deps**: The core engine is pure Java with zero external complexity.
+- 📦 **Zero Config**: Automatic detection for all Spring Data JPA repositories.
 
 ## Quick Start
 
@@ -34,7 +34,7 @@ Navigate to `http://localhost:8080/sql-insight` in your browser.
 
 | Annotation | Purpose |
 |------------|---------|
-| `@QueryTrace` | Group queries by method scope. |
+| `@QueryTrace` | Group queries by method scope (Auto-detected for JPA repositories). |
 | `@QueryLabel` | Tag queries with a custom name. |
 | `@SlowQueryAlert` | Set per-method performance thresholds. |
 | `@DisableQueryTracking` | Hide sensitive or high-frequency operations. |

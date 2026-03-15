@@ -136,9 +136,18 @@ export default function Queries() {
                     </span>
                   </TableCell>
                   <TableCell>
-                    <div className="flex flex-col">
-                      <span className="text-slate-200 font-medium">{query.sourceMethod}</span>
-                      <span className="text-xs text-slate-500">{query.sourceClass}</span>
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-slate-200 font-semibold">{query.sourceMethod || 'N/A'}</span>
+                        {query.sourceClass && (
+                          <span className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] text-slate-400 font-mono uppercase tracking-wider">
+                            {query.sourceClass.split('.').pop()}
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-[11px] text-slate-500 font-mono truncate max-w-[200px]" title={query.sourceClass}>
+                        {query.sourceClass}
+                      </span>
                     </div>
                   </TableCell>
                   <TableCell className="text-slate-400 text-xs">

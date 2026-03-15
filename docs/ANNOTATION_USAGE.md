@@ -13,6 +13,9 @@ public User authenticate(String email, String password) {
 }
 ```
 
+> [!NOTE]
+> All Spring Data JPA repositories are automatically tracked. You only need `@QueryTrace` for custom service methods or DAO implementations not following the standard `Repository` interface.
+
 ## `@QueryLabel`
 
 Attaches a specific label to every SQL query executed inside the method.

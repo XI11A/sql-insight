@@ -15,7 +15,7 @@ Build an **open-source Spring Boot library** that provides real-time insights in
 
 The library should help developers:
 
-- Debug SQL queries
+- Debug SQL queries with zero configuration
     
 - Detect performance issues
     
@@ -139,7 +139,7 @@ Example:
 SELECT * FROM orders WHERE user_id = ?
 ```
 
-If executed repeatedly inside a loop, flag as potential N+1 issue.
+If executed repeatedly inside a loop, flag as potential N+1 issue. The system recognizes and deduplicates unique query patterns to reduce noise.
 
 ---
 

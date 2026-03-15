@@ -57,4 +57,8 @@ To intentionally enable the dashboard in production, explicitly set `sql-insight
 
 ## Performance Overhead
 
-SQL Insight is optimized for minimal overhead. It uses a `ThreadLocal` context for trace tracking and a `ConcurrentLinkedQueue` for storage. However, query masking and stack trace walking for source tracking do carry a small cost per query. It is recommended to use it primarily in development and staging environments.
+SQL Insight is optimized for minimal overhead. It uses a `ThreadLocal` context for trace tracking and a `ConcurrentLinkedQueue` for storage. 
+
+As of v1.0, **Spring Data JPA repositories are automatically tracked via efficient AOP pointcuts**, significantly reducing the need for stack trace walking. Traditional source tracking via stack trace analysis is only used as a fallback for custom DAO implementations. 
+
+Query masking and serialization carry a small cost per query; it is recommended to keep `sql-insight.dashboard-enabled` as `false` in production unless debugging is required.

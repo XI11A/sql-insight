@@ -64,7 +64,8 @@ Spring Boot integration module.
 Responsibilities:
 - Auto configuration
 - Property loading
-- Register Hibernate interceptors
+- Register Hibernate interceptors & DataSource proxy
+- AOP-based automated JPA repository tracking
 - Enable dashboard APIs
 
 ---
@@ -144,9 +145,9 @@ Aggregates statistics.
 Metrics:
 
 - totalQueries
-- avgExecutionTime
+- avgExecutionTime (calculated based on session total)
 - slowQueries
-- nPlusOneWarnings
+- nPlusOneWarnings (deduplicated by pattern)
 
 ---
 
