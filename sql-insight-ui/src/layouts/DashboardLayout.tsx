@@ -6,7 +6,10 @@ import {
   ZapOff, 
   Layers, 
   Database,
-  Activity
+  Activity,
+  Github,
+  Star,
+  ExternalLink
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -57,11 +60,26 @@ export default function DashboardLayout() {
           <NavItem to="/nplus1" icon={<Layers size={20} />} label="N+1 Detection" />
         </nav>
 
-        <div className="mt-auto p-4 border-t border-slate-800 mb-6">
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-tight">System Online</span>
+        <div className="mt-auto p-4 border-t border-slate-800">
+          <div className="mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-tight">System Online</span>
+            </div>
           </div>
+          
+          <a 
+            href="https://github.com/XI11A" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="group flex flex-col gap-1 p-3 rounded-lg bg-slate-800/50 hover:bg-slate-800 transition-all border border-slate-700/50 hover:border-slate-600"
+          >
+            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Developer</span>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-slate-200 group-hover:text-primary transition-colors">Nivash Chandran</span>
+              <ExternalLink size={12} className="text-slate-500 group-hover:text-primary" />
+            </div>
+          </a>
         </div>
       </aside>
 
@@ -71,6 +89,28 @@ export default function DashboardLayout() {
           <div className="flex items-center gap-2 text-slate-400">
              <Activity size={18} />
              <span className="text-sm font-medium">Hibernate Query Statistics</span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <a 
+              href="https://github.com/XI11A/sql-insight" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-all text-xs font-medium border border-slate-700"
+            >
+              <Github size={14} />
+              <span>Repository</span>
+            </a>
+            
+            <a 
+              href="https://github.com/XI11A/sql-insight/stargazers" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all text-xs font-bold border border-primary/20"
+            >
+              <Star size={14} fill="currentColor" />
+              <span>Star on GitHub</span>
+            </a>
           </div>
         </header>
         <div className="max-w-7xl mx-auto">
