@@ -45,14 +45,14 @@ class SqlInsightControllerTest {
 
     @Test
     void testHealthEndpoint() throws Exception {
-        mockMvc.perform(get("/sql-insight/health"))
+        mockMvc.perform(get("/sql-insight/api/health"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("UP"));
     }
 
     @Test
     void testQueriesEndpoint() throws Exception {
-        mockMvc.perform(get("/sql-insight/queries"))
+        mockMvc.perform(get("/sql-insight/api/queries"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray());
     }
